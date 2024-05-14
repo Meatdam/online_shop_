@@ -1,0 +1,130 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+{% load my_tags %}
+{% block title %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-6 m-3">YourStore</h1>
+    <p class="lead"><b>YourStore</b> - ваш магазин с приятными ценами и отличным обслуживанием!</p>
+    <p class="lead">Мы рады что <b>вы</b> с нами!</p>
+</div>
+{% endblock %}
+
+{% block container %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    <div class="carousel-item active">
+                        <img class="d-block img-fluid" src="{% static 'vendor/img/corousel/home-1.jpg' %}"
+                             alt="First slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block img-fluid"
+                             src="{% static 'vendor/img/corousel/f781e79409bcdf0d6f8ad296ee9bede6.jpeg' %}"
+                             alt="Second slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block img-fluid" src="{% static 'vendor/img/corousel/iPhone-11.jpg' %}"
+                             alt="Third slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block img-fluid"
+                             src="{% static 'vendor/img/corousel/remillard_huynh_honolulu_oahu_hawaii_attorney_law_firm_testimonials.jpeg' %}"
+                             alt="for slide">
+                    </div>
+
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+            {% if user.is_superuser or user.is_staff %}
+            <a class="btn btn-outline-success mb-4" href="{% url 'catalog:create' %}">
+            добавить товар
+        </a>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-12">
+            <div class="row">
+                {% for product in object_list %}
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <a href="{% url 'catalog:single_product' product.id %}">
+                            <img class="card-img-top"
+                                 src="{{ product.avatar | media_filter }}">
+                        </a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="{% url 'catalog:single_product' product.id %}">{{ product.name }}</a>
+                            </h4>
+                            <h5>{{ product.price }} руб.</h5>
+                            <p class="card-text text-truncate "><span>{{ product.description }}</span></p>
+                        </div>
+                        <div class="card-footer text-center">
+                            <a class="btn btn-outline-success btn-block" href="{% url 'catalog:basket_add' product.id %}">
+                                Отправить в корзину
+                            </a>
+                            {% if user.is_superuser or user.is_staff %}
+                            <a class="btn btn-outline-warning btn-block" href="{% url 'catalog:edit' product.id %}">
+                                Редактировать
+                            </a>
+                            <a class="btn btn-outline-danger btn-block" href="{% url 'catalog:delete' product.id %}">
+                                Удалить
+                            </a>
+                            <p>Активная версия: {{ product.active_version }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+        <div class="col-lg-9">
+            {% if is_paginated %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item {% if not page_obj.has_previous %} disabled {% endif %} ">
+                        <a class="page-link"
+                           href="{% if page_obj.has_previous %}{% url 'catalog:paginator' page_obj.previous_page_number %}{% else %} # {% endif %}"
+                           tabindex="-1" aria-disabled="true">
+                            Предыдущая
+                        </a>
+                    </li>
+                    {% for page in paginator.page_range %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url 'catalog:paginator' page %}">
+                            {{ page }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <li class="page-item {% if not page_obj.has_next %} disabled {% endif %}">
+                        <a class="page-link"
+                           href="{% if page_obj.has_next %}{% url 'catalog:paginator' page_obj.next_page_number %}{% else %} # {% endif %}">
+                            Следующая
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

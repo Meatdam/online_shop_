@@ -1,0 +1,36 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+{% load my_tags %}
+{% block title %}
+{{ object.title }}
+{% endblock %}
+
+{% block container %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4 p-5 mt-5">
+            <div class="card h-80">
+
+                <img class="card-img-top"
+                     src="{{ object.image | media_filter }}"
+                     alt="">
+
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4 p-5 mt-5">
+            <div class="card h-80" style="width: 42rem ">
+                <div class="card-header">
+                    <h3>{{ object.title }} ({{ object.slug }})</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ object.title }}</h5>
+                    <p class="card-text">{{ object.description }}</p>
+                </div>
+                <div class="card-footer text-center">
+                        Просмотры: {{ object.views_count }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
