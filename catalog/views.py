@@ -45,7 +45,7 @@ class IndexListView(TitleMixin, ListView):
                 product.active_version = 'Нет активной версии'
 
         context_data['object_list'] = products
-        # context_data['categories'] = Category.objects.all()
+        context_data['categories'] = Category.objects.all()
         return context_data
 
 
