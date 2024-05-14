@@ -1,0 +1,78 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+{% load my_tags %}
+{% block title %}
+{{ course.title }}
+{% endblock %}
+
+{% block container %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4 p-5 mt-5">
+            <div class="card h-80">
+
+                <img class="card-img-top"
+                     src="{{ object.avatar | media_filter }}"
+                     alt="">
+
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4 p-5 mt-5">
+            <div class="card h-80" style="width: 42rem ">
+                <div class="card-header">
+                    <h3>{{ object.name }}</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ object.name }}</h5>
+                    <p class="card-text">{{ object.description }}</p>
+                    <p class="card-text-center">Цена: {{ object.price }} руб.</p>
+                </div>
+                <div class="card-footer text-center">
+                    <div class="card-footer text-center">
+                        <a class="btn btn-outline-success" href="{% url 'catalog:basket_add' object.id %}">
+                            Отправить в корзину
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-6 mb-4">
+            <p>{{ object.comments_product.all.count }} Комментарий</p>
+            <hr>
+            {% if user.is_authenticated %}
+            <form action="" id="add_form" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                </form>
+                <button form="add_form" type="submit" class="btn btn-primary">Оставить коментарий</button>
+            {% endif %}
+            {% if messages %}
+            <div class="alert alert-success">
+                {% for m in messages %}
+                {{m}}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+
+            {% for comment in object.comments_product.all %}
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        Пользователь: @{{ comment.user }}
+                    </div>
+                    <div class="card-body"><p class="card-text">{{ comment.text }}</p></div>
+                        <div class="card-footer text-center">
+                            Дата : {{ comment.created_at }}
+                        </div>
+                </div>
+
+                {% endfor %}
+
+
+
+            </div>
+        </div>
+
+        {% endblock %}
+

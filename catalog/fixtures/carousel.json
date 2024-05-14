@@ -1,0 +1,42 @@
+[
+  {
+    "model": "catalog.carousel",
+    "pk": 1,
+    "fields": {
+      "name": "Очиститель воздуха",
+      "images": "catalog/carusel/f781e79409bcdf0d6f8ad296ee9bede6.jpeg"
+    }
+  },
+  {
+    "model": "catalog.carousel",
+    "pk": 2,
+    "fields": {
+      "name": "Iphone",
+      "images": "catalog/carusel/iPhone-11.jpg"
+    }
+  },
+  {
+    "model": "catalog.carousel",
+    "pk": 3,
+    "fields": {
+      "name": "family",
+      "images": "catalog/carusel/home-1.jpg"
+    }
+  },
+  {
+    "model": "catalog.carousel",
+    "pk": 4,
+    "fields": {
+      "name": "beats",
+      "images": "catalog/carusel/Photo_Beats-Limited-Edition_00.webp"
+    }
+  },
+  {
+    "model": "catalog.carousel",
+    "pk": 5,
+    "fields": {
+      "name": "macbook",
+      "images": "catalog/carusel/remillard_huynh_honolulu_oahu_hawaii_attorney_law_firm_testimonials.jpeg"
+    }
+  }
+]

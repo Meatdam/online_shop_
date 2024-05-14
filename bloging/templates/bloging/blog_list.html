@@ -1,0 +1,47 @@
+{% extends 'catalog/base.html' %}
+{% block container %}
+{% load my_tags %}
+<div class="container px-3 py-3 pt-md-5 pb-md-4">
+    {% if user.is_authenticated %}
+    <div class="col-12 mb-5 pt-md-5">
+        <a class="btn btn-outline-primary" href="{% url 'bloging:create' %}">Добавить отзыв</a>
+    </div>
+    {% endif %}
+    <div class="row mt-5">
+        {% for blog in object_list %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+                <a href="{% url 'bloging:view' blog.pk %}">
+                    <img class="card-img-top"
+                         src="{{ blog.image | media_filter }}">
+                </a>
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <a href="{% url 'bloging:view' blog.pk %}">{{ blog.title }}</a>
+                    </h4>
+                    <p class="card-text text-truncate "><span>{{ blog.description }}</span></p>
+                </div>
+                <div class="card-footer">
+                    <a class="btn btn-sm btn-outline-secondary"
+                       href="{% url 'bloging:view' blog.pk %}">Просмотр</a>
+                    {% if user.is_authenticated and request.user == blog.owner %}
+                    <a class="btn btn-sm btn-outline-secondary"
+                       href="{% url 'bloging:edit' blog.pk %}">Редактировать</a>
+                    <a class="btn btn-sm btn-outline-danger"
+                       href="{% url 'bloging:delete' blog.pk %}">Удалить</a>
+                    {% endif %}
+                </div>
+                {% if user.is_authenticated and request.user == blog.owner %}
+                <a class="btn btn-sm btn-outline-danger"
+                   href="{% url 'bloging:toggle_activity' blog.pk %}">Деактивировать</a>
+
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+
+
+    </div>
+</div>
+
+{% endblock %}
