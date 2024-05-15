@@ -34,18 +34,8 @@ class IndexListView(TitleMixin, ListView):
 
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
-        products = Product.objects.all()
-
-        for product in products:
-            versions = Version.objects.filter(product=product)
-            active_versions = versions.filter(version_flag=True)
-            if active_versions:
-                product.active_version = active_versions.last().version_name
-            else:
-                product.active_version = 'Нет активной версии'
-
-        context_data['object_list'] = products
         context_data['categories'] = Category.objects.all()
+
         return context_data
 
 
