@@ -105,7 +105,7 @@ class Version(models.Model):
     """
     Создание модели в БД "Version", прямая связь с таблицей "Product" через "product"
     """
-    product = models.ForeignKey(to=Product, on_delete=models.CASCADE, verbose_name='продукт')
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE, related_name='version', verbose_name='продукт')
     number_version = models.IntegerField(default=1, verbose_name='номер версии')
     version_name = models.CharField(max_length=250, verbose_name='название версии')
     version_flag = models.BooleanField(default=True, verbose_name='признак версии')
