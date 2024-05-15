@@ -53,8 +53,8 @@
             </div>
             {% if user.is_superuser or user.is_staff %}
             <a class="btn btn-outline-success mb-4" href="{% url 'catalog:create' %}">
-            добавить товар
-        </a>
+                добавить товар
+            </a>
             {% endif %}
         </div>
 
@@ -75,7 +75,8 @@
                             <p class="card-text text-truncate "><span>{{ product.description }}</span></p>
                         </div>
                         <div class="card-footer text-center">
-                            <a class="btn btn-outline-success btn-block" href="{% url 'catalog:basket_add' product.id %}">
+                            <a class="btn btn-outline-success btn-block"
+                               href="{% url 'catalog:basket_add' product.id %}">
                                 Отправить в корзину
                             </a>
                             {% if user.is_superuser or user.is_staff %}
@@ -85,12 +86,17 @@
                             <a class="btn btn-outline-danger btn-block" href="{% url 'catalog:delete' product.id %}">
                                 Удалить
                             </a>
-                            <p>Активная версия: {{ product.active_version }}</p>
+
+                            {% for status in product.version.all %}
+                            <p>Активная версия: <strong>{{ status.version_name }}</strong></p>
+                            <p>Номер версии: <strong>{{ status.number_version }}</strong></p>
+                            {% endfor %}
                             {% endif %}
                         </div>
                     </div>
                 </div>
                 {% endfor %}
+
             </div>
 
         </div>
