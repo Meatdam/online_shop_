@@ -1,4 +1,8 @@
-from django.shortcuts import HttpResponseRedirect
+import string
+import random
+
+from django.core.mail import send_mail
+from django.shortcuts import HttpResponseRedirect, get_object_or_404, render
 from django.contrib import auth
 from django.urls import reverse, reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
@@ -6,6 +10,7 @@ from django.views.generic.base import TemplateView
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
 
+from config.settings import EMAIL_HOST_USER
 from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 from users.models import User, EmailVerification
 from common.views import TitleMixin
@@ -44,6 +49,14 @@ class ProfileUpdateView(TitleMixin, UpdateView):
     form_class = UserProfileForm
     template_name = 'users/profile.html'
     title = 'Личный кабинет'
+    success_url = reverse_lazy('users:profile')
+
+    def get_success_url(self, **kwargs):
+        """
+        Переопределение метода "get_success_url" для перехода на страницу товара
+        :return: reverse_lazy('catalog:single_product', kwargs={'pk': self.get_object().id})
+        """
+        return reverse_lazy('users:profile', kwargs={'pk': self.get_object().id})
 
 
 class EmailView(TitleMixin, TemplateView):
@@ -91,4 +104,32 @@ class EmailVerificationView(TitleMixin, TemplateView):
             return super(EmailVerificationView, self).get(request, *args, **kwargs)
         else:
             return HttpResponseRedirect(reverse('index'))
+
+
+def reset_password(request):
+    context = {
+        'success_message': 'Пароль успешно сброшен. Новый пароль был отправлен на ваш адрес электронной почты.',
+    }
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        user = get_object_or_404(User, email=email)
+        characters = string.ascii_letters + string.digits
+        characters_list = list(characters)
+        random.shuffle(characters_list)
+        password = ''.join(characters_list[:10])
+
+        # user.set_password(make_password(password))
+        user.set_password(password)
+        user.save()
+
+        send_mail(
+            subject='Восстановление пароля',
+            message=f'Здравствуйте, вы запрашивали обновление пароля. Ваш новый пароль: {password}',
+            from_email=EMAIL_HOST_USER,
+            recipient_list=[user.email],
+        )
+
+        return render(request, 'users/reset_password.html', context)
+
+    return render(request, 'users/reset_password.html')
 
