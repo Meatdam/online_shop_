@@ -1,5 +1,4 @@
 import json
-from pprint import pprint
 
 from catalog.models import Product, Category
 from config.settings import BASE_DIR
