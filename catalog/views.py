@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
 from django.shortcuts import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
@@ -6,7 +8,7 @@ from django.views.generic import DetailView, TemplateView
 from django.views.generic.edit import FormMixin, CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-from catalog.forms import CommentsForm, ProductCreateForm, VersionForm
+from catalog.forms import CommentsForm, ProductCreateForm, VersionForm, ProductModeratorForm
 from catalog.models import Product, Category, Basket, Version
 from common.views import TitleMixin
 
@@ -130,7 +132,7 @@ class ProductCreateView(TitleMixin, CreateView):
         return super().form_valid(form)
 
 
-class ProductUpdateView(TitleMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, TitleMixin, UpdateView):
     """
     Класс для отображения страницы редактирования товара
     """
@@ -166,6 +168,14 @@ class ProductUpdateView(TitleMixin, UpdateView):
             formset.save()
 
         return super().form_valid(form)
+
+    def get_form_class(self):
+
+        user = self.request.user
+        if (user.has_perm('catalog.can_edit_publication_sign') and user.has_perm('catalog.can_edit_category')
+                and user.has_perm('catalog.can_edit_description')):
+            return ProductModeratorForm
+        raise PermissionDenied
 
 
 class ProductDeleteView(TitleMixin, DeleteView):
