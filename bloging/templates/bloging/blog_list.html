@@ -27,9 +27,14 @@
                     {% if user.is_authenticated and request.user == blog.owner %}
                     <a class="btn btn-sm btn-outline-secondary"
                        href="{% url 'bloging:edit' blog.pk %}">Редактировать</a>
+                    {% endif %}
+                    {% if perms.bloging.delete_blog or user == blog.owner  %}
                     <a class="btn btn-sm btn-outline-danger"
                        href="{% url 'bloging:delete' blog.pk %}">Удалить</a>
                     {% endif %}
+
+
+
                 </div>
                 {% if user.is_authenticated and request.user == blog.owner %}
                 <a class="btn btn-sm btn-outline-danger"
