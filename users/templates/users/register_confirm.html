@@ -1,0 +1,25 @@
+{% extends 'users/style_modal.html' %}
+
+{% block content %}
+<div class="modal modal-sheet position-static d-block bg-transparent p-4 py-md-5">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content rounded-3 shadow">
+            <div class="modal-body p-4 text-center">
+                <h4>Мы отправили вам проверочный код на Ваш email</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-floating mb-3">
+                        <input class="form-control rounded-3" name="verification_code" id="floatingPassword"
+                               placeholder="Введите код">
+                    </div>
+
+                    <button type="submit" class="btn btn-lg btn-primary">
+                        Отправить код
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
