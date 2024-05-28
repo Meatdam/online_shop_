@@ -33,6 +33,7 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField(default=0, verbose_name='количество')
     created_at = models.DateTimeField(default=timezone.now, verbose_name='дата создания')
     updated_at = models.DateTimeField(verbose_name='дата изменения', **NULLABLE)
+    publication_sign = models.BooleanField(default=False, verbose_name='Признак публикации')
 
     def __str__(self):
         return f"{self.name} ({self.price})"
@@ -40,6 +41,11 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
+        permissions = [
+            ('can_edit_publication_sign', 'can edit publication sign'),
+            ('can_edit_category', 'can edit category'),
+            ('can_edit_description', 'can edit description'),
+        ]
 
 
 class Carousel(models.Model):
