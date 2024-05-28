@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, DeleteView, DetailView, UpdateView
 from pytils.translit import slugify
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from bloging.forms import AddBlogForm
 from bloging.models import Blog
@@ -103,25 +103,14 @@ class BlogUpdateView(LoginRequiredMixin, TitleMixin, UpdateView):
         return kwargs
 
 
-class BlogDeleteView(LoginRequiredMixin, TitleMixin, DeleteView):
+class BlogDeleteView(TitleMixin, LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     """
     Удаление отзыва
     """
     model = Blog
     title = 'Удаление отзыва'
     success_url = reverse_lazy('bloging:list')
-
-    def delete(self, request, *args, **kwargs):
-        """
-        Call the delete() method on the fetched object and then redirect to the
-        success URL.
-        """
-        self.object = self.get_object()
-        if self.request.user != self.object.owner:
-            return self.handle_no_permission()
-        success_url = self.get_success_url()
-        self.object.delete()
-        return HttpResponseRedirect(success_url)
+    permission_required = 'bloging.delete_blog'
 
 
 def publication(request, pk):
