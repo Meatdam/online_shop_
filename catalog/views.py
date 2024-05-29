@@ -119,16 +119,11 @@ class ProductCreateView(TitleMixin, CreateView):
 
     def form_valid(self, form):
         """
-        Переопределение метода "form_valid" для сохранения слага
-        :param: form
-        :return: super().form_valid(form)
+        Привязывает продукт к текущему пользователю.
         """
-        formset = self.get_context_data()['formset']
-        self.object = form.save()
-        if formset.is_valid():
-            formset.instance = self.object
-            formset.save()
-
+        product = form.save()
+        product.user_owner = self.request.user
+        product.save()
         return super().form_valid(form)
 
 
@@ -161,17 +156,23 @@ class ProductUpdateView(LoginRequiredMixin, TitleMixin, UpdateView):
         :param: form
         :return: super().form_valid(form)
         """
-        formset = self.get_context_data()['formset']
-        self.object = form.save()
-        if formset.is_valid():
+        context_data = self.get_context_data()
+        formset = context_data['formset']
+        if form.is_valid() and formset.is_valid():
+            self.object = form.save()
             formset.instance = self.object
             formset.save()
-
-        return super().form_valid(form)
+            return super().form_valid(form)
+        else:
+            return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
     def get_form_class(self):
-
+        """
+        Проверка на владельца продукта или модератора с правами на редактирование
+        """
         user = self.request.user
+        if user == self.object.user_owner:
+            return ProductCreateForm
         if (user.has_perm('catalog.can_edit_publication_sign') and user.has_perm('catalog.can_edit_category')
                 and user.has_perm('catalog.can_edit_description')):
             return ProductModeratorForm
