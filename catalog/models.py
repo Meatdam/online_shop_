@@ -34,6 +34,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(default=timezone.now, verbose_name='дата создания')
     updated_at = models.DateTimeField(verbose_name='дата изменения', **NULLABLE)
     publication_sign = models.BooleanField(default=False, verbose_name='Признак публикации')
+    user_owner = models.ForeignKey(to=User, on_delete=models.CASCADE, verbose_name='владелец', **NULLABLE)
 
     def __str__(self):
         return f"{self.name} ({self.price})"
