@@ -41,10 +41,10 @@
             <hr>
             {% if user.is_authenticated %}
             <form action="" id="add_form" method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                </form>
-                <button form="add_form" type="submit" class="btn btn-primary">Оставить коментарий</button>
+                {% csrf_token %}
+                {{ form.as_p }}
+            </form>
+            <button form="add_form" type="submit" class="btn btn-primary">Оставить коментарий</button>
             {% endif %}
             {% if messages %}
             <div class="alert alert-success">
@@ -57,22 +57,21 @@
 
             {% for comment in object.comments_product.all %}
 
-                <div class="card mt-4">
-                    <div class="card-header">
-                        Пользователь: {{ comment.user }}
-                    </div>
-                    <div class="card-body"><p class="card-text">{{ comment.text }}</p></div>
-                        <div class="card-footer text-center">
-                            Дата : {{ comment.created_at }}
-                        </div>
+            <div class="card mt-4">
+                <div class="card-header">
+                    Пользователь: {{ comment.user }}
                 </div>
-
-                {% endfor %}
-
-
-
+                <div class="card-body"><p class="card-text">{{ comment.text }}</p></div>
+                <div class="card-footer text-center">
+                    Дата : {{ comment.created_at }}
+                </div>
             </div>
-        </div>
 
-        {% endblock %}
+            {% endfor %}
+
+
+        </div>
+    </div>
+
+    {% endblock %}
 
