@@ -23,16 +23,16 @@ PASSWORD_DB = os.getenv('PASSWORD_DB')
 USER_DB = os.getenv('USER_DB')
 
 # DOMAIN settings
-DOMAIN_NAME = 'http://localhost:8000'
+DOMAIN_NAME = os.getenv('DOMAIN')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-f%_4(=@@g^4)qarl0&ucn!fqni5x$54be#_7)n^on_o1mbv(6-'
+SECRET_KEY = os.getenv('KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG') == 'True'
 
 ALLOWED_HOSTS = []
 
@@ -93,8 +93,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'product',
+        'ENGINE': os.getenv('ENGINE'),
+        'NAME': os.getenv('DB_NAME'),
         'USER': USER_DB,
         'PASSWORD': PASSWORD_DB,
 
@@ -163,6 +163,14 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD_MAIL')
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
+CACHE_ENABLED = os.getenv('CACHE_ENABLED') == 'True'
 
+if CACHE_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": os.getenv('CACHES_BACKEND'),
+            "LOCATION": os.getenv('CACHES_LOCATION'),
+        }
+    }
 
 
