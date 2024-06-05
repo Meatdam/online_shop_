@@ -9,7 +9,8 @@ from django.views.generic.edit import FormMixin, CreateView, DeleteView, UpdateV
 from django.views.generic.list import ListView
 
 from catalog.forms import CommentsForm, ProductCreateForm, VersionForm, ProductModeratorForm
-from catalog.models import Product, Category, Basket, Version
+from catalog.models import Product, Basket, Version, Category
+from catalog.services import get_product_from_cache, get_category_from_cache
 from common.views import TitleMixin
 
 
@@ -27,17 +28,26 @@ class IndexListView(TitleMixin, ListView):
     def get_queryset(self):
         """
         Переопределяем метод get_queryset для фильтрации товаров по категории
+        поключен кеш к queryset services/get_product_from_cach
         :param: category_id
         :return: queryset
         """
-        queryset = super(IndexListView, self).get_queryset()
+        queryset = get_product_from_cache()
         category_id = self.kwargs.get('category_id')
         return queryset.filter(category_id=category_id) if category_id else queryset
 
     def get_context_data(self, *args, **kwargs):
+        """
+        Добавление категорий в контекст
+        подключен кеш services/get_category_from_cach
+        :param args:
+        :type args:
+        :param kwargs:
+        :type kwargs:
+        :return: context_data['categories']
+        """
         context_data = super().get_context_data(*args, **kwargs)
-        context_data['categories'] = Category.objects.all()
-
+        context_data['categories'] = get_category_from_cache()
         return context_data
 
 
