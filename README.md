@@ -42,25 +42,31 @@ pip install -r requirements.txt
 ```
 6. Создать файл .env в корне проекта и заполнить следующие данные:
 ```
-ENGINE=django.db.backends.postgresql
-DB_NAME=название вашей БД
-USER_DB= имя пользователя от вашей БД
-PASSWORD_DB= пароль от БД
+# DB settings
+ENGINE=
+DB_NAME=
+USER_DB=
+PASSWORD_DB=
 
-EMAIL_HOST_USER_MAIL= email адрес от которого будут приходит письма при регистрации (указать необходимо существующий адрес)
-EMAIL_HOST_PASSWORD_MAIL=пороль от email (как правило на email приходит сообщение о создании проложения, и выдаст пороль, куда надо будет вставить сюда)
+# Email settings
+EMAIL_HOST_USER_MAIL=
+EMAIL_HOST_PASSWORD_MAIL=
 
-ADMIN_EMAIL= email который вы хотите присвоить админу сайта
+# email admin
+ADMIN_EMAIL=
 
-KEY=ключь всего проекта
+# secret key from django
+KEY=
 
-DOMAIN=если проект находится локально на ПК то можно прописать "(http://localhost:8000)"
+# domain settings
+DOMAIN=
 
-DEBUG= True или False хотите ли скрывать подсказки в брузере значит False
+DEBUG=
 
-CACHE_ENABLED= True или False в зависимости от того хотите ли вы подключить кеширование или нет
-CACHES_BACKEND=настрйки Redis
-CACHES_LOCATION=место нахождения Redis
+# CACHE settings
+CACHE_ENABLED=
+CACHES_BACKEND=
+CACHES_LOCATION=
 
 ```
 
