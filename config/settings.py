@@ -172,5 +172,3 @@ if CACHE_ENABLED:
             "LOCATION": os.getenv('CACHES_LOCATION'),
         }
     }
-
-

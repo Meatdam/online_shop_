@@ -1,5 +1,6 @@
 from django.urls import path
 
+
 from bloging.apps import BlogingConfig
 from bloging.views import BlogCreateView, BlogListView, BlogDetailView, BlogUpdateView, BlogDeleteView, publication
 
