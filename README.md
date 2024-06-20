@@ -27,19 +27,22 @@ ________
 ```
 git@github.com:Meatdam/online_shop.git
 ```
-2. Установить виртуальное окружение ```venv```
+2. Установить виртуальное окружение `venv`
 ```
-python3 -m venv venv
+python3 -m venv venv для MacOS и Linux систем
+python -m venv venv для windows
 ```
-3. Подключить виртуальное окружение
+3. Активировать виртуальное окружение
 ```
-source venv/bin/activate
+source venv/bin/activate для MasOs и Linux систем
+venv\Scripts\activate.bat для windows
 ```
-4. Создать базу данных в ```PgAdmin```, либо через терминал. Необходимо дать название в файле settings.py в каталоге 'config' в константе (словаре) 'DATABASES'
-5. Обязательно установить пакет со всеми зависимостями 
+4. установить файл с зависимостями
 ```
 pip install -r requirements.txt
 ```
+5. Создать базу данных в ```PgAdmin```, либо через терминал. Необходимо дать название в файле settings.py в каталоге 'config' в константе (словаре) 'DATABASES'
+
 6. Создать файл .env в корне проекта и заполнить следующие данные:
 ```
 # DB settings
@@ -69,6 +72,6 @@ CACHES_BACKEND=
 CACHES_LOCATION=
 
 ```
-Автор проекта:
+Автор проекта:<br>
 [Кузькин Илья](https://github.com/Meatdam)
 
